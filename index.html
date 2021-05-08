@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Prediction</title>
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="mdc-card mdc-elevation--z8 content-card">
+        <div class="mdc-card__content">
+            <div class="mdc-typography--headline4 card-heading">
+                TV Price Prediction
+            </div>
+            <div class="card-options">
+                <div class="mdc-select mdc-select--outlined">
+                    <div class="mdc-select__anchor" aria-labelledby="outlined-select-label">
+                      <span class="mdc-notched-outline">
+                        <span class="mdc-notched-outline__leading"></span>
+                        <span class="mdc-notched-outline__notch">
+                          <span id="outlined-select-label" class="mdc-floating-label">Pick a Food Group</span>
+                        </span>
+                        <span class="mdc-notched-outline__trailing"></span>
+                      </span>
+                      <span class="mdc-select__selected-text-container">
+                        <span id="demo-selected-text" class="mdc-select__selected-text"></span>
+                      </span>
+                      <span class="mdc-select__dropdown-icon">
+                        <svg
+                            class="mdc-select__dropdown-icon-graphic"
+                            viewBox="7 10 10 5" focusable="false">
+                          <polygon
+                              class="mdc-select__dropdown-icon-inactive"
+                              stroke="none"
+                              fill-rule="evenodd"
+                              points="7 10 12 15 17 10">
+                          </polygon>
+                          <polygon
+                              class="mdc-select__dropdown-icon-active"
+                              stroke="none"
+                              fill-rule="evenodd"
+                              points="7 15 12 10 17 15">
+                          </polygon>
+                        </svg>
+                      </span>
+                    </div>
+                  
+                    <!-- Other elements from the select remain. -->
+                    <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">...</div>
+                  </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
