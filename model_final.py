@@ -3,6 +3,8 @@ import math
 import pickle
 from sklearn.preprocessing import LabelEncoder,OneHotEncoder,StandardScaler
 from sklearn.compose import ColumnTransformer
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
 
 dataset = pd.read_csv('TV.csv')
 
@@ -27,20 +29,6 @@ x=x.todense()
 scaler_y = StandardScaler()
 y=scaler_y.fit_transform(y.values.reshape(-1, 1))
 
-"""
-from sklearn.model_selection import train_test_split
-x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2)
-from sklearn.ensemble import RandomForestRegressor
-regressor = RandomForestRegressor(n_estimators = 1000, random_state = 42)
-regressor.fit(x_train, y_train.ravel())
-y_pred = regressor.predict(x_test)
-y_pred_acc=scaler_y.inverse_transform(y_pred)
-y_test_acc=scaler_y.inverse_transform(y_test)
-from sklearn.metrics import mean_squared_error
-print('RMSE is {}'.format(math.sqrt(mean_squared_error(y_test_acc, y_pred_acc))))
-
-pickle.dump(regressor, open("saved_model",'wb'))
-"""
 def output(brand,hd,hdmi,rating,size,speaker,usb):
     topredict=[[brand,hd,hdmi,rating,size,speaker,usb]]
     temp=pd.DataFrame(topredict)
@@ -57,4 +45,14 @@ def output(brand,hd,hdmi,rating,size,speaker,usb):
     y_pred = scaler_y.inverse_transform(y_pred)
     return round(y_pred[0])
 
-   
+if __name__ == '__main__':
+    x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2)
+    regressor = RandomForestRegressor(n_estimators = 1000, random_state = 42)
+    regressor.fit(x_train, y_train.ravel())
+    y_pred = regressor.predict(x_test)
+    y_pred_acc=scaler_y.inverse_transform(y_pred)
+    y_test_acc=scaler_y.inverse_transform(y_test)
+    from sklearn.metrics import mean_squared_error
+    print('RMSE is {}'.format(math.sqrt(mean_squared_error(y_test_acc, y_pred_acc))))
+
+    pickle.dump(regressor, open("saved_model",'wb'))

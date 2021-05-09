@@ -1,7 +1,7 @@
-function getSelectMenu(label, options) {
+function getSelectMenu({label, options, id}) {
   let menuHTML = `
-    <div class="mdc-select mdc-select--outlined demo-width-class">
-      <div class="mdc-select__anchor" aria-labelledby="outlined-select-label">
+    <div class="mdc-select mdc-select--outlined mdc-select--required" id="${id}">
+      <div class="mdc-select__anchor" aria-labelledby="outlined-select-label" aria-required="true">
         <span class="mdc-notched-outline">
           <span class="mdc-notched-outline__leading"></span>
           <span class="mdc-notched-outline__notch">
