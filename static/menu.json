@@ -23,31 +23,31 @@
         "options": [
             {
                 "key": "32",
-                "value": "32 inch"
+                "value": "32 Inch"
             },
             {
                 "key": "43",
-                "value": "43 inch"
+                "value": "43 Inch"
             },
             {
                 "key": "40",
-                "value": "40 inch"
+                "value": "40 Inch"
             },
             {
                 "key": "24",
-                "value": "24 inch"
+                "value": "24 Inch"
             },
             {
                 "key": "55",
-                "value": "55 inch"
+                "value": "55 Inch"
             },
             {
                 "key": "50",
-                "value": "50 inch"
+                "value": "50 Inch"
             },
             {
                 "key": "49",
-                "value": "49 inch"
+                "value": "49 Inch"
             }
         ]
     },
@@ -67,11 +67,11 @@
         "label": "Rating",
         "id": "rating",
         "options": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5"
+            {"key": "1", "value": "🌟"},
+            {"key": "2", "value": "🌟🌟"},
+            {"key": "3", "value": "🌟🌟🌟"},
+            {"key": "2", "value": "🌟🌟🌟🌟"},
+            {"key": "3", "value": "🌟🌟🌟🌟🌟"}
         ]
     },
     {
@@ -79,9 +79,9 @@
         "label": "HDMI Ports",
         "id": "hdmi",
         "options": [
-            "1",
-            "2",
-            "3"
+            {"key": "1", "value": "1 Port"},
+            {"key": "2", "value": "2 Ports"},
+            {"key": "3", "value": "3 Ports"}
         ]
     },
     {
@@ -89,8 +89,8 @@
         "label": "USB",
         "id": "usb",
         "options": [
-            "1",
-            "2"
+            {"key": "1", "value": "1 Port"},
+            {"key": "2", "value": "2 Ports"}
         ]
     },
     {
@@ -100,23 +100,23 @@
         "options": [
             {
                 "key": "10",
-                "value": "10"
+                "value": "10W"
             },
             {
                 "key": "20",
-                "value": "20"
+                "value": "20W"
             },
             {
                 "key": "24",
-                "value": "24"
+                "value": "24W"
             },
             {
                 "key": "30",
-                "value": "30"
+                "value": "30W"
             },
             {
                 "key": "40",
-                "value": "40"
+                "value": "40W"
             }
         ]
     }
