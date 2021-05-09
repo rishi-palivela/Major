@@ -7,11 +7,11 @@
   <title>Price Prediction</title>
   <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
   <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-  <script src="menu.js"></script>
+  <script src="{{ url_for('static', filename='menu.js') }}"></script>
 </head>
 
 <body>
@@ -39,7 +39,7 @@
     menuGenFuncs = { 'select': getSelectMenu }
     console.log(menuGenFuncs)
 
-    $.getJSON('./menu.json', (menus) => {
+    $.getJSON('{{ url_for("static", filename="menu.json") }}', (menus) => {
       console.log(menus)
       for (let menu of menus) {
         $('#card-options').append(menuGenFuncs[menu.type](menu.label, menu.options))
