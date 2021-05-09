@@ -1,0 +1,12 @@
+[
+    {
+        "type": "select",
+        "label": "TV",
+        "options": ["Sony", "LG"]
+    },
+    {
+        "type": "select",
+        "label": "TV",
+        "options": ["Sony", "LG"]
+    }
+]
