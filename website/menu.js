@@ -32,6 +32,9 @@ function getSelectMenu(label, options) {
   `;
 
   for (let option of options) {
+    key = (option instanceof Object) ? option.key : option;
+    value = (option instanceof Object) ? option.value : option;
+
     menuHTML += `
           <li class="mdc-list-item" aria-selected="false" data-value="${option}" role="option">
             <span class="mdc-list-item__ripple"></span>

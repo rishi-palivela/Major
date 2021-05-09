@@ -20,6 +20,7 @@ body {
     margin: auto;
     display: inline;
     padding: 20px;
+    max-width: 60%;
 }
 
 .card-heading {
@@ -30,12 +31,12 @@ body {
 }
 
 .card-options {
-    padding: 20px 30px;
+    padding: 10px 30px;
     border-bottom: var(--hr-color);
 }
 
-.card-options > div {
-    margin: 0px 10px;
+.card-options >center > div > div {
+    margin: 10px 10px;
 }
 
 .card-submit {
