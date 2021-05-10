@@ -6,7 +6,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 
-dataset = pd.read_csv('TV.csv')
+dataset = pd.read_csv('TV_new.csv')
 
 brand_labelencoder = LabelEncoder()
 speaker_labelencoder = LabelEncoder()
@@ -40,19 +40,19 @@ def output(brand,hd,hdmi,rating,size,speaker,usb):
     temp.iloc[:,4]=hd_labelencoder.transform(temp.iloc[:,4])
     temp=col_transformer.transform(temp)
     temp=temp.todense()
-    model = pickle.load(open("saved_model",'rb'))
+    model = pickle.load(open("saved_model_new",'rb'))
     y_pred = model.predict(temp)
     y_pred = scaler_y.inverse_transform(y_pred)
     return round(y_pred[0])
 
 if __name__ == '__main__':
     x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2)
-    regressor = RandomForestRegressor(n_estimators = 1000, random_state = 42)
+    regressor = RandomForestRegressor(n_estimators = 20000, random_state = 69, n_jobs = 12)
     regressor.fit(x_train, y_train.ravel())
     y_pred = regressor.predict(x_test)
     y_pred_acc=scaler_y.inverse_transform(y_pred)
     y_test_acc=scaler_y.inverse_transform(y_test)
     from sklearn.metrics import mean_squared_error
-    print('RMSE is {}'.format(math.sqrt(mean_squared_error(y_test_acc, y_pred_acc))))
+    print(f'MSE is {math.sqrt(mean_squared_error(y_test_acc, y_pred_acc))}')
 
-    pickle.dump(regressor, open("saved_model",'wb'))
+    pickle.dump(regressor, open("saved_model_new",'wb'))

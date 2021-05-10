@@ -1,114 +1,59 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Mar 25 22:39:49 2020
-
-@author: Hitesh
-"""
-
 from bs4 import BeautifulSoup
-from urllib.request import urlopen as urlReq
+from urllib.request import urlopen
 import pandas as pd
+import re
 
-TV=[]
-r=0
-TV_Brand=[]
-TV_Ratings=[]
-TV_size=[]
-TV_HD=[]
-TV_speakers=[]
-TV_hdmi=[]
-TV_usb=[]
-TV_cost=[]
-    
-URL1="https://www.flipkart.com/search?q=tv&sid=ckf%2Cczl&as=on&as-show=on&otracker=AS_QueryStore_OrganicAutoSuggest_1_2_na_na_na&otracker1=AS_QueryStore_OrganicAutoSuggest_1_2_na_na_na&as-pos=1&as-type=RECENT&suggestionId=tv%7CTVs&requestId=3ee7e2ac-b845-4a0c-a075-232968460b29&as-backfill=on"
-URL2="https://www.flipkart.com/search?q=tv&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off&page=2"
-URL3="https://www.flipkart.com/search?q=tv&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off&page=3"
-URL4="https://www.flipkart.com/search?q=tv&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off&page=4"
-URL5="https://www.flipkart.com/search?q=tv&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off&page=5"
-URL6="https://www.flipkart.com/search?q=tv&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off&page=6"
-URL7="https://www.flipkart.com/search?q=tv&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off&page=7"
-URL8="https://www.flipkart.com/search?q=tv&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off&page=8"
-URL9="https://www.flipkart.com/search?q=tv&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off&page=9"
+URL = "https://www.flipkart.com/search?q=tv&sid=ckf%2Cczl&as=on&as-show=on&otracker=AS_QueryStore_OrganicAutoSuggest_1_2_na_na_na&otracker1=AS_QueryStore_OrganicAutoSuggest_1_2_na_na_na&as-pos=1&as-type=RECENT&suggestionId=tv%7CTVs&requestId=3ee7e2ac-b845-4a0c-a075-232968460b29&as-backfill=on&page="
+csv_file = 'TV_new.csv'
+tv_data = []
 
-URL=[URL1,URL2,URL3,URL4,URL5,URL6,URL7,URL8,URL9]
-for i in URL:
-    Client=urlReq(URL1)
-    html_data=Client.read()
-    Client.close()
-    print(i)
-    soup = BeautifulSoup(html_data, 'html.parser')
+for i in range(72):
+    url = f"{URL}{i}"
+    print(f"{i+1} - {url}")
+    with urlopen(url) as client:
+        soup = BeautifulSoup(client.read(), 'html.parser')
     
-    #Brand of TV
-    names=soup.find_all("div",{"class":"_3wU53n"})
-    for name in names:
-        TV_Brand.append(name.text.split(' ')[0])
+    items = soup.find_all("div", { "class": "_1YokD2 _3Mn1Gg"})[1]\
+                .find_all("div", { "class": "_1AtVbE col-12-12"})
     
-    
-    #TV ratings
-    ratings=soup.find_all("div",{"class":"hGSR34"})
-    for rating in ratings:
-        if(r<len(TV_Brand)):
-            TV_Ratings.append(float(rating.text))
-            r+=1
-    
-    #TV size
-    sizes=soup.find_all("div",{"class":"_3wU53n"})
-    for size in sizes:
-        size_of_tv = size.text[int(size.text.find("("))+1:int(size.text.find(")"))]
-        if('inch' in size_of_tv):
-            size_of_tv=size_of_tv.split()[0]
+    for item in items:
+        try:
+            name = item.find("div", {"class": "_4rR01T"}).text
+            brand = name.split(' ')[0]
+            size = re.search("((\d{1,2}) inch)", name, re.IGNORECASE).groups()[1]
+            rating = item.find("div", {"class": "_3LWZlK"}).text
+            cost = item.find("div", {"class": "_30jeq3 _1_WHN1"}).text[1:].replace(',', '')
+
+            spec_list = item.find("ul", {"class": "_1xgFaf"}).find_all("li", {"class": "rgWa7D"})
+
+            item_data = {'Brand': brand, "Ratings": rating, "Speaker": 0, "Size": size, 
+                    "HD": "Other", "HDMI": 0, "USB": 0, "Cost": cost}
+
+            for spec in spec_list:
+                if('Full HD' in spec.text):
+                    item_data["HD"] = 'Full HD'
+                elif('HD Ready' in spec.text):
+                    item_data["HD"] = 'HD'
+                elif('Ultra HD (4K)' in spec.text):
+                    item_data["HD"] = 'Ultra HD 4K'
+                elif('Ultra HD (8K)' in spec.text):
+                    item_data["HD"] = 'Ultra HD 8K'
             
-        TV_size.append(float(size_of_tv))
-    
-    #HD
-    HDs=soup.find_all("ul",{"class":"vFw0gD"})
-    for HD in HDs:
-        for li in HD.find_all("li",{"class":"tVe95H"}):
-            if('Full HD' in li.text):
-               TV_HD.append('Full HD')
-            if('HD Ready'in li.text):
-               TV_HD.append('HD')
-            if('Ultra HD (4K)'in li.text):
-               TV_HD.append('Ultra HD 4K')
-            if('Ultra HD (8K)'in li.text):
-               TV_HD.append('Ultra HD 8K')
-            else:
-                TV_HD.append('Other')
+                if('Speaker' in spec.text):
+                    try: item_data["Speaker"] = int(re.search("((\d{1,2}) W)", spec.text, re.IGNORECASE).groups()[1])
+                    except: pass
 
-    #Speakers
-    speakers=soup.find_all("ul",{"class":"vFw0gD"})
-    for speaker in speakers:
-        for li in speaker.find_all("li",{"class":"tVe95H"}):
-            if('Speaker' in li.text):
-                TV_speakers.append(int(li.text.lower().split('w')[0]))
-    
-    #Hdmi
-    HDMIS=soup.find_all("ul",{"class":"vFw0gD"})
-    for HDMI in HDMIS:
-        for li in HDMI.find_all("li",{"class":"tVe95H"}):
-            if('HDMI' in li.text):
-                TV_hdmi.append(int(li.text.split('x')[0]))
-        
-    #USB
-    USBS=soup.find_all("ul",{"class":"vFw0gD"})
-    for USB in USBS:
-        for li in USB.find_all("li",{"class":"tVe95H"}):
-            if('USB' in li.text):
-                TV_usb.append(int(li.text.split('x')[1].split('| ')[1]))
-                break
-    
-    #Cost of TV
-    costs=soup.find_all("div",{"class":"_1vC4OE _2rQ-NK"})
-    for cost in costs:
-        price= cost.text.split('₹')[1]
-        price= price.replace(',', '')
-        TV_cost.append(int(price))
-        
-    #creatinf dataframe
-for Brand,Ratings,Speaker,Size,HD,HDMI,USB,Cost in zip(TV_Brand,TV_Ratings,TV_speakers,TV_size,TV_HD,TV_hdmi,TV_usb,TV_cost):
-    TV.append({'Brand':Brand,'Ratings':Ratings,'Speaker':Speaker,'Size':Size,'HD':HD,'HDMI':HDMI,'USB':USB,'Cost':Cost})
-    
-    
-TV_data=pd.DataFrame(TV)
-    
-TV_data.to_csv(r'G:\Hitesh\TV from flipkart\TV.csv',index=False)
+                if('HDMI' in spec.text):
+                    try: item_data["HDMI"] = int(re.search("((\d) x HDMI)", spec.text, re.IGNORECASE).groups()[1])
+                    except: pass
+                
+                if('USB' in spec.text):
+                    try: item_data["USB"] = int(re.search("((\d) x USB)", spec.text, re.IGNORECASE).groups()[1])
+                    except: pass
+            tv_data.append(item_data)
+        except AttributeError:
+            continue
+
+TV_data = pd.DataFrame(tv_data)
+TV_data.to_csv(csv_file, index=False)
+print(f"Saved Dataframe of shape: {TV_data.shape} to {csv_file}")
