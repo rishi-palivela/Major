@@ -1,12 +1,13 @@
+import numpy as np
 import pandas as pd
-import math
 import pickle
 from sklearn.preprocessing import LabelEncoder,OneHotEncoder,StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestRegressor
 
-dataset = pd.read_csv('TV_new.csv')
+dataset = pd.read_csv(r'G:\Major Project\TV_PricePrediction\Final_data.csv')
 
 brand_labelencoder = LabelEncoder()
 speaker_labelencoder = LabelEncoder()
@@ -26,11 +27,39 @@ y=dataset.iloc[:,-1]
 col_transformer = ColumnTransformer(transformers=[('ohe', OneHotEncoder(), [0,2,3,4,5,6])],remainder='passthrough')
 x= col_transformer.fit_transform(x)
 x=x.todense()
+log_y = np.log2(y)
 scaler_y = StandardScaler()
 y=scaler_y.fit_transform(y.values.reshape(-1, 1))
+'''
+# Number of trees in random forest
+n_estimators = [int(x) for x in np.linspace(start = 200, stop = 2000, num = 10)]
+# Number of features to consider at every split
+max_features = ['auto', 'sqrt']
+# Maximum number of levels in tree
+max_depth = [int(x) for x in np.linspace(10, 110, num = 11)]
+max_depth.append(None)
+# Minimum number of samples required to split a node
+min_samples_split = [2, 5, 10]
+# Minimum number of samples required at each leaf node
+min_samples_leaf = [1, 2, 4]
+# Method of selecting samples for training each tree
+bootstrap = [True, False]
+# Create the random grid
+random_grid = {'n_estimators': n_estimators,
+               'max_features': max_features,
+               'max_depth': max_depth,
+               'min_samples_split': min_samples_split,
+               'min_samples_leaf': min_samples_leaf,
+               'bootstrap': bootstrap}
 
+rf = RandomForestRegressor()
+grid_search = GridSearchCV(estimator = rf, param_grid = random_grid, cv = 3, n_jobs = -1, verbose = 2)
+
+grid_search.fit(x,y.ravel())
+grid_search.best_params_
+'''
 def output(brand,hd,hdmi,rating,size,speaker,usb):
-    topredict=[[brand,hd,hdmi,rating,size,speaker,usb]]
+    topredict=[[brand.lower(),hd,hdmi,rating,size,speaker,usb]]
     temp=pd.DataFrame(topredict)
     temp.columns=['Brand','Ratings','Speaker','Size','HD','HDMI','USB']
     temp.iloc[:,0]=brand_labelencoder.transform(temp.iloc[:,0])
@@ -47,12 +76,17 @@ def output(brand,hd,hdmi,rating,size,speaker,usb):
 
 if __name__ == '__main__':
     x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2)
-    regressor = RandomForestRegressor(n_estimators = 20000, random_state = 69, n_jobs = 12)
+    regressor = RandomForestRegressor(bootstrap=True, n_estimators = 200, max_features='sqrt', max_depth=90, min_samples_split=5, min_samples_leaf=1 , n_jobs = -1)
     regressor.fit(x_train, y_train.ravel())
     y_pred = regressor.predict(x_test)
+    ##y_pred_acc = np.exp2(y_pred)    
+    ##y_test_acc = np.exp2(y_test)
     y_pred_acc=scaler_y.inverse_transform(y_pred)
     y_test_acc=scaler_y.inverse_transform(y_test)
     from sklearn.metrics import mean_squared_error
-    print(f'MSE is {math.sqrt(mean_squared_error(y_test_acc, y_pred_acc))}')
+    print(f'MSE is {np.sqrt(mean_squared_error(y_test_acc, y_pred_acc))}')
+    pickle.dump(regressor, open(r"G:\Major Project\TV_PricePrediction\saved_model_new",'wb'))
+    
 
-    pickle.dump(regressor, open("saved_model_new",'wb'))
+
+ 
