@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Price Prediction</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script src="{{ url_for('static', filename='menu.js') }}"></script>
+</head>
+
+<body>
+  <img class="hero-image-top" src="{{ url_for('static', filename='apple_tv_top.png') }}" />
+
+  <div class="mdc-card mdc-elevation--z8 content-card">
+    <div class="mdc-card__content">
+      <div class="mdc-typography--headline4 card-heading">
+        TV Price Prediction
+      </div>
+      <div class="card-options">
+        <center>
+          <div id="card-options">
+          </div>
+        </center>
+      </div>
+      <div class="card-submit">
+        <button class="mdc-button mdc-button--outlined submit-button" id="form-button" disabled="disabled">
+          <span class="mdc-button__ripple"></span>
+          <span class="mdc-button__label submit-label">Get Price</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mdc-card mdc-elevation--z8 result-card">
+    <div class="mdc-card__content">
+      <span class="mdc-typography--headline6 result-card-pretext">
+        Your TV Predicted Price:
+        <span class="mdc-typography--headline5 result-card-price" id="result"></span>
+      </span>
+    </div>
+  </div>
+
+  <!-- <img class="hero-image-buttom" src="{{ url_for('static', filename='apple_tv_bottom_combined.png') }}" /> -->
+
+  <script>
+    console.log()
+
+    const ids = ["brand", "size", "hd", "rating", "hdmi", "usb", "speaker"];
+    const selects = {};
+
+    menuGenFuncs = { 'select': getSelectMenu }
+    console.log(menuGenFuncs)
+
+    $.getJSON('{{ url_for("static", filename="menu_new.json") }}', (menus) => {
+      console.log(menus)
+      for (let menu of menus) {
+        $('#card-options').append(menuGenFuncs[menu.type](menu))
+      }
+
+      for (let id of ids) {
+        const select = document.getElementById(id);
+        selects[id] = new mdc.select.MDCSelect(select);
+      }
+      $('#form-button').prop("disabled", false);
+
+      console.log(selects)
+    })
+
+    const buttons = document.getElementsByClassName('mdc-button');
+    for (let button of buttons) mdc.ripple.MDCRipple.attachTo(button);
+
+    $('#form-button').click(() => {
+      $('.result-card').fadeTo(300, 0);
+      const data = {}
+      var cont = true;
+
+      for (let id of ids) {
+        const select = selects[id];
+        if (select.value == "") { select.valid = false; cont = false; }
+        data[id] = select.value;
+      }
+
+      if (!cont) return;
+      
+      $.ajax({
+        url: '/predict',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (result) {
+          const price_str = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(result['price'])
+          $('#result').text(price_str)
+
+          $('.result-card').fadeTo(500, 1);
+        },
+        data: JSON.stringify(data)
+      });
+
+
+
+    })
+  </script>
+</body>
+
+</html>
