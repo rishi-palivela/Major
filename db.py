@@ -7,8 +7,6 @@ This is a temporary script file.
 
 import mysql.connector
 
-mydb = mysql.connector.connect(host="localhost", user="root",   passwd="hitesh")
-
 mydb = mysql.connector.connect(
   host="localhost",
   user="root",
@@ -17,9 +15,6 @@ mydb = mysql.connector.connect(
 )
 
 mycursor = mydb.cursor()
-"""
-mycursor.execute("CREATE TABLE TV (Brand VARCHAR(15), Ratings DECIMAL(5,2), Speaker INT(1), Size INT(1), HD VARCHAR(15), HDMI INT(1), USB INT(1), Cost INT(6))")
-"""
 
 query = "Select * from TV where `Speaker`=%s AND `Size`=%s AND `HD`=%s AND `HDMI`=%s AND `USB`=%s ORDER BY `Cost`, `Ratings` LIMIT 3"
   

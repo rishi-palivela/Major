@@ -4,63 +4,26 @@
         "label": "Brand",
         "id": "brand",
         "options": [
-            "Adsun",
-            "Akai",
-            "BPL",
             "Blaupunkt",
             "CloudWalker",
-            "Compaq",
-            "Coocaa",
-            "Croma",
-            "DETEL",
-            "Daiwa",
-            "Dektron",
-            "G-TEN",
-            "HUIDI",
             "Haier",
             "Hisense",
             "Hitachi",
-            "IGO",
-            "IMPEX",
-            "Iffalcon",
-            "Infocus",
-            "Intex",
-            "JVC",
             "KODAK",
             "LG",
-            "Lloyd",
             "MOTOROLA",
-            "MarQ",
             "Mi",
             "Micromax",
-            "NOBLE",
-            "Noble",
-            "Nokia",
             "ONIDA",
-            "OnePlus",
-            "Onix",
             "PHILIPS",
-            "POLAROID",
             "Panasonic",
-            "RGL",
             "SAMSUNG",
             "SONY",
-            "SVL",
-            "Samsung",
             "Sansui",
-            "Sanyo",
-            "Sharp",
-            "Sony",
-            "T-Series",
             "TCL",
-            "TOSHIBA",
-            "Thomson",
-            "Videocon",
+            "Thomson"
             "Vu",
-            "Weston",
-            "iFFALCON",
-            "infinix",
-            "realme"
+            "iFFALCON"
         ]
     },
     {
@@ -68,17 +31,13 @@
         "label": "Size",
         "id": "size",
         "options": [
+	    {
+                "key": "24",
+                "value": "24 Inch"
+            },
             {
                 "key": "32",
                 "value": "32 Inch"
-            },
-            {
-                "key": "37",
-                "value": "37 Inch"
-            },
-            {
-                "key": "39",
-                "value": "39 Inch"
             },
             {
                 "key": "40",
@@ -97,14 +56,6 @@
                 "value": "46 Inch"
             },
             {
-                "key": "47",
-                "value": "47 Inch"
-            },
-            {
-                "key": "48",
-                "value": "48 Inch"
-            },
-            {
                 "key": "49",
                 "value": "49 Inch"
             },
@@ -113,36 +64,12 @@
                 "value": "50 Inch"
             },
             {
-                "key": "51",
-                "value": "51 Inch"
-            },
-            {
                 "key": "55",
                 "value": "55 Inch"
             },
             {
-                "key": "58",
-                "value": "58 Inch"
-            },
-            {
-                "key": "60",
-                "value": "60 Inch"
-            },
-            {
-                "key": "64",
-                "value": "64 Inch"
-            },
-            {
                 "key": "65",
                 "value": "65 Inch"
-            },
-            {
-                "key": "75",
-                "value": "75 Inch"
-            },
-            {
-                "key": "85",
-                "value": "85 Inch"
             }
         ]
     },
@@ -190,10 +117,6 @@
         "id": "hdmi",
         "options": [
             {
-                "key": "0",
-                "value": "No HDMI Port"
-            },
-            {
                 "key": "1",
                 "value": "1 Port"
             },
@@ -217,10 +140,6 @@
         "id": "usb",
         "options": [
             {
-                "key": "0",
-                "value": "NO USB Port"
-            },
-            {
                 "key": "1",
                 "value": "1 Port"
             },
@@ -240,36 +159,12 @@
         "id": "speaker",
         "options": [
             {
-                "key": "0",
-                "value": "0W"
-            },
-            {
-                "key": "2",
-                "value": "2W"
-            },
-            {
-                "key": "5",
-                "value": "5W"
-            },
-            {
-                "key": "6",
-                "value": "6W"
-            },
-            {
                 "key": "8",
                 "value": "8W"
             },
             {
                 "key": "10",
                 "value": "10W"
-            },
-            {
-                "key": "12",
-                "value": "12W"
-            },
-            {
-                "key": "14",
-                "value": "14W"
             },
             {
                 "key": "16",
@@ -292,16 +187,8 @@
                 "value": "35W"
             },
             {
-                "key": "39",
-                "value": "39W"
-            },
-            {
                 "key": "40",
                 "value": "40W"
-            },
-            {
-                "key": "48",
-                "value": "48W"
             },
             {
                 "key": "50",
@@ -311,10 +198,6 @@
                 "key": "60",
                 "value": "60W"
             },
-            {
-                "key": "98",
-                "value": "98W"
-            }
         ]
     }
 ]

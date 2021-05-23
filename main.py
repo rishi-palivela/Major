@@ -1,5 +1,5 @@
 from flask import Flask, flash, request, redirect, render_template, jsonify
-import model_final
+import model_final,db
 
 app = Flask(__name__)
 
@@ -25,8 +25,8 @@ def predict():
     hdmi = int(data["hdmi"])
     usb = int(data["usb"])
     result = model_final.output(brand, rating, speaker, size, hd, hdmi, usb)
-    
-    return jsonify({"price": result})
+    tv1,tv2,tv3 = db.output(speaker, size, hd, hdmi, usb)
+    return jsonify({"price": result}) #tv1,tv2,tv3
 
 @app.route('/result', methods=['POST'])
 def result():
@@ -41,7 +41,8 @@ def result():
 
         result = model_final.output(brand, rating, speaker, size, hd, hdmi, usb)
         return render_template("result.html", prediction=result)
-
+	
+	
 
 
 if __name__ == "__main__":
